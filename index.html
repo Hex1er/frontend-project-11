@@ -1,13 +1,39 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend-project-11</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSS Aggregator</title>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+
+        <h1 class="mb-4">RSS Aggregator</h1>
+
+        <p class="lead mb-4">
+          Начните читать RSS сегодня! Это легко, это красиво.
+        </p>
+
+        <form class="rss-form">
+          <div class="input-group mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Ссылка RSS"
+              aria-label="Ссылка RSS"
+              required
+            />
+            <button class="btn btn-primary" type="submit">
+              Добавить
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>
