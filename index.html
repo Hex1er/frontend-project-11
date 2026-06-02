@@ -3,34 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RSS Aggregator</title>
+  <title>RSS Агрегатор</title>
 </head>
 <body>
-  <div class="container mt-5">
+  <div class="container-fluid bg-dark p-5">
     <div class="row">
-      <div class="col-lg-8 mx-auto">
+      <div class="col-md-10 col-lg-8 mx-auto text-white">
+        <h1 class="display-3 mb-0">RSS агрегатор</h1>
+        <p class="lead">Начните читать RSS сегодня! Это легко, это красиво.</p>
 
-        <h1 class="mb-4">RSS Aggregator</h1>
-
-        <p class="lead mb-4">
-          Начните читать RSS сегодня! Это легко, это красиво.
-        </p>
-
-        <form class="rss-form">
-          <div class="input-group mb-3">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Ссылка RSS"
-              aria-label="Ссылка RSS"
-              required
-            />
-            <button class="btn btn-primary" type="submit">
-              Добавить
-            </button>
+        <form class="rss-form text-body" novalidate>
+          <div class="row">
+            <div class="col">
+              <div class="form-floating">
+                <input
+                  type="text"
+                  class="form-control"
+                  id="url-input"
+                  name="url"
+                  placeholder=" "
+                  autofocus
+                  required
+                />
+                <label for="url-input">Ссылка RSS</label>
+              </div>
+              <p class="feedback m-0 position-absolute small"></p>
+            </div>
+            <div class="col-auto">
+              <button type="submit" class="btn btn-primary btn-lg px-sm-5" style="height: 3.7rem;">Добавить</button>
+            </div>
           </div>
         </form>
-
       </div>
     </div>
   </div>
