@@ -1,7 +1,36 @@
 import './style.css'
 import { proxy } from 'valtio/vanilla'
 import * as yup from 'yup'
+import i18next from 'i18next'
+
 import initView from './view.js'
+import resources from './locales/index.js'
+
+const i18n = i18next.createInstance()
+
+await i18n.init({
+  lng: 'ru',
+  debug: false,
+  resources,
+})
+
+yup.setLocale({
+  mixed: {
+    required: () => ({
+      key: 'errors.required',
+    }),
+
+    notOneOf: () => ({
+      key: 'errors.duplicate',
+    }),
+  },
+
+  string: {
+    url: () => ({
+      key: 'errors.invalidUrl',
+    }),
+  },
+})
 
 const elements = {
   form: document.querySelector('.rss-form'),
@@ -12,33 +41,30 @@ const elements = {
 const state = proxy({
   form: {
     error: null,
-    success: null,
+    success: false,
     loading: false,
   },
+
   feeds: [],
 })
 
-// Инициализация View
-initView(state, elements)
+initView(state, elements, i18n)
 
-// Схема валидации
 const makeUrlSchema = (feeds) => yup
   .string()
-  .required('Не должно быть пустым')
-  .url('Ссылка должна быть валидным URL')
+  .required()
+  .url()
   .notOneOf(
     feeds.map(feed => feed.url),
-    'Этот RSS уже добавлен',
   )
 
-// Контроллер
 elements.form.addEventListener('submit', (e) => {
   e.preventDefault()
 
   const url = elements.input.value.trim()
 
   state.form.error = null
-  state.form.success = null
+  state.form.success = false
   state.form.loading = true
 
   const schema = makeUrlSchema(state.feeds)
@@ -47,7 +73,7 @@ elements.form.addEventListener('submit', (e) => {
     .then((validUrl) => {
       state.feeds.push({ url: validUrl })
 
-      state.form.success = 'RSS успешно добавлен'
+      state.form.success = true
 
       elements.input.value = ''
       elements.input.focus()
@@ -59,5 +85,3 @@ elements.form.addEventListener('submit', (e) => {
       state.form.loading = false
     })
 })
-
-console.log('RSS Aggregator ready')
