@@ -3,11 +3,16 @@ export default {
     errors: {
       required: 'Не должно быть пустым',
       invalidUrl: 'Ссылка должна быть валидным URL',
-      duplicate: 'RSS уже существует',
+      duplicate: 'Этот RSS уже добавлен',
+      network: 'Ошибка сети',
+      parsing: 'Ресурс не содержит валидный RSS',
     },
 
     success: {
-      feedAdded: 'RSS успешно добавлен',
+      feedAdded: 'RSS успешно загружен',
     },
+
+    feeds: 'Фиды',
+    posts: 'Посты',
   },
 }

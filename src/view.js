@@ -1,7 +1,7 @@
 import { subscribe } from 'valtio/vanilla'
 
 export default (state, elements, i18n) => {
-  const render = () => {
+  const renderFeedback = () => {
     const { error, success } = state.form
 
     if (error) {
@@ -20,8 +20,7 @@ export default (state, elements, i18n) => {
       elements.input.classList.remove('is-invalid')
       elements.input.classList.add('is-valid')
 
-      elements.feedback.textContent =
-        i18n.t('success.feedAdded')
+      elements.feedback.textContent = i18n.t('success.feedAdded')
 
       elements.feedback.classList.remove('text-danger')
       elements.feedback.classList.add('text-success')
@@ -40,6 +39,120 @@ export default (state, elements, i18n) => {
       'text-danger',
       'text-success',
     )
+  }
+
+  const renderFeeds = () => {
+    elements.feeds.innerHTML = ''
+
+    if (state.feeds.length === 0) {
+      return
+    }
+
+    const card = document.createElement('div')
+    card.classList.add('card', 'border-0')
+
+    const cardBody = document.createElement('div')
+    cardBody.classList.add('card-body')
+
+    const title = document.createElement('h2')
+    title.classList.add('card-title', 'h4')
+    title.textContent = i18n.t('feeds')
+
+    cardBody.append(title)
+
+    const list = document.createElement('ul')
+    list.classList.add(
+      'list-group',
+      'border-0',
+      'rounded-0',
+    )
+
+    state.feeds.forEach((feed) => {
+      const item = document.createElement('li')
+
+      item.classList.add(
+        'list-group-item',
+        'border-0',
+        'border-end-0',
+      )
+
+      const feedTitle = document.createElement('h3')
+
+      feedTitle.classList.add('h6', 'm-0')
+      feedTitle.textContent = feed.title
+
+      const description = document.createElement('p')
+
+      description.classList.add(
+        'm-0',
+        'text-black-50',
+      )
+
+      description.textContent = feed.description
+
+      item.append(feedTitle, description)
+      list.append(item)
+    })
+
+    card.append(cardBody, list)
+    elements.feeds.append(card)
+  }
+
+  const renderPosts = () => {
+    elements.posts.innerHTML = ''
+
+    if (state.posts.length === 0) {
+      return
+    }
+
+    const card = document.createElement('div')
+    card.classList.add('card', 'border-0')
+
+    const cardBody = document.createElement('div')
+    cardBody.classList.add('card-body')
+
+    const title = document.createElement('h2')
+    title.classList.add('card-title', 'h4')
+    title.textContent = i18n.t('posts')
+
+    cardBody.append(title)
+
+    const list = document.createElement('ul')
+
+    list.classList.add(
+      'list-group',
+      'border-0',
+      'rounded-0',
+    )
+
+    state.posts.forEach((post) => {
+      const item = document.createElement('li')
+
+      item.classList.add(
+        'list-group-item',
+        'border-0',
+        'border-end-0',
+      )
+
+      const link = document.createElement('a')
+
+      link.href = post.link
+      link.target = '_blank'
+      link.rel = 'noopener noreferrer'
+      link.textContent = post.title
+
+      item.append(link)
+      list.append(item)
+    })
+
+    card.append(cardBody, list)
+    elements.posts.append(card)
+  }
+
+  const render = () => {
+    renderFeedback()
+    renderFeeds()
+    renderPosts()
   }
 
   render()
