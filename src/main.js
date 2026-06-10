@@ -8,6 +8,7 @@ import resources from './locales/index.js'
 import fetchFeed from './api.js'
 import parseRss from './parser.js'
 import generateId from './utils.js'
+import updateFeeds from './updateFeeds.js'
 
 const i18n = i18next.createInstance()
 
@@ -47,11 +48,16 @@ const state = proxy({
 
 initView(state, elements, i18n)
 
+// Запускаем бесконечную проверку обновлений
+updateFeeds(state)
+
 const makeUrlSchema = (feeds) => yup
   .string()
   .required()
   .url()
-  .notOneOf(feeds.map((feed) => feed.url))
+  .notOneOf(
+    feeds.map(feed => feed.url),
+  )
 
 elements.form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -65,8 +71,8 @@ elements.form.addEventListener('submit', (e) => {
   const schema = makeUrlSchema(state.feeds)
 
   schema.validate(url)
-    .then((validUrl) => fetchFeed(validUrl))
-    .then((xml) => parseRss(xml))
+    .then(validUrl => fetchFeed(validUrl))
+    .then(xml => parseRss(xml))
     .then(({ feed, posts }) => {
       const feedId = generateId()
 
@@ -77,7 +83,7 @@ elements.form.addEventListener('submit', (e) => {
         description: feed.description,
       })
 
-      const newPosts = posts.map((post) => ({
+      const newPosts = posts.map(post => ({
         id: generateId(),
         feedId,
         title: post.title,
@@ -93,7 +99,7 @@ elements.form.addEventListener('submit', (e) => {
       elements.input.focus()
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof yup.ValidationError) {
         state.form.error = err.message
       } else if (err.message === 'parsing') {
         state.form.error = { key: 'errors.parsing' }
