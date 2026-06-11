@@ -129,7 +129,7 @@ export default (state, elements, i18n) => {
 
       button.dataset.id = post.id
       button.setAttribute('data-bs-toggle', 'modal')
-      button.setAttribute('data-bs-target', '#postModal')
+      button.setAttribute('data-bs-target', '#modal')
 
       item.append(link, button)
       list.append(item)
