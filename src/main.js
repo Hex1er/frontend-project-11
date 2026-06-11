@@ -31,11 +31,11 @@ yup.setLocale({
 const elements = {
   form: document.querySelector('.rss-form'),
   input: document.querySelector('#url-input'),
+
   feedback: document.querySelector('.feedback'),
   feeds: document.querySelector('.feeds'),
   posts: document.querySelector('.posts'),
 
-  // modal
   modalTitle: document.querySelector('.modal-title'),
   modalBody: document.querySelector('.modal-body p'),
   modalLink: document.querySelector('.full-article'),

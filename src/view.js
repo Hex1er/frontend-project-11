@@ -2,6 +2,12 @@ import { subscribe } from 'valtio/vanilla'
 
 export default (state, elements, i18n) => {
 
+  const renderLoading = () => {
+    elements.input.disabled = state.form.loading
+
+    elements.button.disabled = state.form.loading
+  }
+
   const renderFeedback = () => {
     const { error, success } = state.form
 
@@ -150,6 +156,7 @@ export default (state, elements, i18n) => {
     renderFeeds()
     renderPosts()
     renderModal()
+    renderLoading()
   }
 
   render()
