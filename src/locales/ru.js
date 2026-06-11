@@ -14,5 +14,11 @@ export default {
 
     feeds: 'Фиды',
     posts: 'Посты',
+
+    modal: {
+      preview: 'Просмотр',
+      close: 'Закрыть',
+      readFull: 'Читать полностью',
+    },
   },
 }

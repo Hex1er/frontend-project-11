@@ -34,6 +34,11 @@ const elements = {
   feedback: document.querySelector('.feedback'),
   feeds: document.querySelector('.feeds'),
   posts: document.querySelector('.posts'),
+
+  // modal
+  modalTitle: document.querySelector('.modal-title'),
+  modalBody: document.querySelector('.modal-body p'),
+  modalLink: document.querySelector('.full-article'),
 }
 
 const state = proxy({
@@ -42,22 +47,36 @@ const state = proxy({
     success: null,
     loading: false,
   },
+
   feeds: [],
   posts: [],
+
+  ui: {
+    viewedPosts: [],
+    modalPostId: null,
+  },
 })
 
 initView(state, elements, i18n)
-
-// Запускаем бесконечную проверку обновлений
 updateFeeds(state)
 
-const makeUrlSchema = (feeds) => yup
-  .string()
-  .required()
-  .url()
-  .notOneOf(
-    feeds.map(feed => feed.url),
-  )
+const makeUrlSchema = (feeds) =>
+  yup
+    .string()
+    .required()
+    .url()
+    .notOneOf(feeds.map((feed) => feed.url))
+
+elements.posts.addEventListener('click', (e) => {
+  const { id } = e.target.dataset
+  if (!id) return
+
+  if (!state.ui.viewedPosts.includes(id)) {
+    state.ui.viewedPosts.push(id)
+  }
+
+  state.ui.modalPostId = id
+})
 
 elements.form.addEventListener('submit', (e) => {
   e.preventDefault()
@@ -71,8 +90,8 @@ elements.form.addEventListener('submit', (e) => {
   const schema = makeUrlSchema(state.feeds)
 
   schema.validate(url)
-    .then(validUrl => fetchFeed(validUrl))
-    .then(xml => parseRss(xml))
+    .then((validUrl) => fetchFeed(validUrl))
+    .then((xml) => parseRss(xml))
     .then(({ feed, posts }) => {
       const feedId = generateId()
 
@@ -83,7 +102,7 @@ elements.form.addEventListener('submit', (e) => {
         description: feed.description,
       })
 
-      const newPosts = posts.map(post => ({
+      const newPosts = posts.map((post) => ({
         id: generateId(),
         feedId,
         title: post.title,
@@ -99,7 +118,7 @@ elements.form.addEventListener('submit', (e) => {
       elements.input.focus()
     })
     .catch((err) => {
-      if (err instanceof yup.ValidationError) {
+      if (err.name === 'ValidationError') {
         state.form.error = err.message
       } else if (err.message === 'parsing') {
         state.form.error = { key: 'errors.parsing' }
