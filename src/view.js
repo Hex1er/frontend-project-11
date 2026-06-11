@@ -119,7 +119,7 @@ export default (state, elements, i18n) => {
       link.dataset.id = post.id
 
       const isRead = state.ui.viewedPosts.includes(post.id)
-      link.classList.add(isRead ? 'fw-normal' : 'fw-bold')
+      link.classList.add(isRead ? 'link-secondary' : 'fw-bold')
 
       const button = document.createElement('button')
       button.type = 'button'
