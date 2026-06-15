@@ -9,7 +9,7 @@ const getProxyUrl = (url) => {
 
 const fetchFeed = (url) => {
   return axios
-    .get(getProxyUrl(url))
+    .get(getProxyUrl(url), { timeout: 10000 })
     .then(response => response.data.contents)
 }
 
